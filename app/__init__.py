@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from config import config
 import os
+from flask_migrate import Migrate
 
 # Initialize extensions
 db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app(config_name=None):
     """Application factory pattern for creating Flask app instances."""
@@ -19,6 +21,7 @@ def create_app(config_name=None):
     
     # Initialize extensions with app
     db.init_app(app)
+    migrate.init_app(app, db)
     CORS(app)
     
     # Register blueprints

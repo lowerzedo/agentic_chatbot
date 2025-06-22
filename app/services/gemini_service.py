@@ -1,4 +1,4 @@
-import google.genai as genai
+import google.generativeai as genai
 from flask import current_app
 import logging
 from typing import Dict, List, Optional
@@ -19,7 +19,8 @@ class GeminiService:
                 raise ValueError("Google API key not found in configuration")
             
             genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel('gemini-pro')
+            # Initialize the model
+            self.model = genai.GenerativeModel('gemini-1.5-flash')
             logging.info("Gemini API configured successfully")
             
         except Exception as e:

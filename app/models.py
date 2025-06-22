@@ -139,4 +139,33 @@ class UniversityInfo(db.Model):
     
     # Timestamps
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc)) 
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+
+class ApplicantData(db.Model):
+    __tablename__ = 'applicant_data'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(36), db.ForeignKey('chat_sessions.id'), nullable=False)
+    name = db.Column(db.String(255), nullable=True)
+    phone = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String(255), nullable=True)
+    intended_program = db.Column(db.String(255), nullable=True)
+    application_status = db.Column(db.String(50), default='interested')
+    data_collection_status = db.Column(db.String(50), default='collecting')  # collecting, complete
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    
+    # Relationship
+    session = db.relationship('ChatSession', backref='applicant_data')
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'session_id': self.session_id,
+            'name': self.name,
+            'phone': self.phone,
+            'email': self.email,
+            'intended_program': self.intended_program,
+            'application_status': self.application_status,
+            'data_collection_status': self.data_collection_status
+        } 
